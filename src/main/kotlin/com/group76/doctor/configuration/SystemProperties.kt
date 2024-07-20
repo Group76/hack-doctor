@@ -11,6 +11,7 @@ class SystemProperties {
 
     class CollectionConfiguration{
         var doctor: String = ""
+        var medicalSpecialties: String = ""
     }
 }
 

@@ -1,5 +1,6 @@
 package com.group76.doctor.services.impl
 
+import com.group76.doctor.configuration.SystemProperties
 import com.group76.doctor.entities.DoctorEntity
 import com.group76.doctor.services.IDoctorDbService
 import org.springframework.stereotype.Component
@@ -8,8 +9,10 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient
 import software.amazon.awssdk.services.dynamodb.model.*
 
 @Component
-class DoctorDbServiceImpl : IDoctorDbService {
-    private val tableName = "Doctor"
+class DoctorDbServiceImpl(
+    private val systemProperties: SystemProperties
+) : IDoctorDbService {
+    private val tableName = systemProperties.collection.doctor
     override fun putItem(doctorEntity: DoctorEntity) : PutItemResponse {
         val dynamoDbClient = DynamoDbClient.builder()
             .region(Region.US_EAST_2)

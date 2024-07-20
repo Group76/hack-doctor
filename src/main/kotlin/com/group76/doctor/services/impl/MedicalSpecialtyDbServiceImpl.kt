@@ -1,5 +1,6 @@
 package com.group76.doctor.services.impl
 
+import com.group76.doctor.configuration.SystemProperties
 import com.group76.doctor.services.IMedicalSpecialtyDbService
 import org.springframework.stereotype.Component
 import software.amazon.awssdk.regions.Region
@@ -10,8 +11,10 @@ import software.amazon.awssdk.services.dynamodb.model.ScanRequest
 import software.amazon.awssdk.services.dynamodb.model.ScanResponse
 
 @Component
-class MedicalSpecialtyDbServiceImpl: IMedicalSpecialtyDbService {
-    private val tableName = "MedicalSpecialties"
+class MedicalSpecialtyDbServiceImpl(
+    private val systemProperties: SystemProperties
+): IMedicalSpecialtyDbService {
+    private val tableName = systemProperties.collection.medicalSpecialties
     override fun getAll(): ScanResponse {
         val dynamoDbClient = DynamoDbClient.builder()
             .region(Region.US_EAST_2)
