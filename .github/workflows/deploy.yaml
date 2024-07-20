@@ -6,10 +6,10 @@ on:
       - main
 
 env:
-  ECR_REPOSITORY: client-ecr-repository
+  ECR_REPOSITORY: doctor-ecr-repository
   AWS_REGION: us-east-2
   ECS_CLUSTER: ecs-cluster
-  ECS_SERVICE: client-api
+  ECS_SERVICE: doctor-api
 
 jobs:
   deploy:
@@ -74,7 +74,7 @@ jobs:
 
       - name: Download task definition
         run: |
-          aws ecs describe-task-definition --task-definition client-api --query taskDefinition > task-definition.json
+          aws ecs describe-task-definition --task-definition doctor-api --query taskDefinition > task-definition.json
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def

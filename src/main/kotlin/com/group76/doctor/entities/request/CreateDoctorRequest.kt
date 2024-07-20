@@ -52,6 +52,9 @@ data class CreateDoctorRequest (
         if(!BrazilStates.containState(crm))
             return "CRM must contain state"
 
+        if(!BrazilStates.containState(state))
+            return "State is invalid"
+
         if(!CepValidator.validateCep(cep))
             return "CEP is invalid"
 
