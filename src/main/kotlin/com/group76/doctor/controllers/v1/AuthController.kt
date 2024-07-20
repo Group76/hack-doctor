@@ -21,12 +21,11 @@ class AuthController(
     private val getTokenByCrmAndPasswordUseCase: IGetTokenByCrmAndPasswordUseCase
 ) {
     @PostMapping(
-        name = "GetTokenByCrmAndPassword",
-        path = ["email"]
+        name = "GetTokenByCrmAndPassword"
     )
     @Operation(
-        method = "GetTokenByEmail",
-        description = "Get a token by e-mail and password",
+        method = "GetTokenByCrmAndPassword",
+        description = "Get a token by CRM and password",
         responses = [
             ApiResponse(
                 description = "OK", responseCode = "200", content = [
@@ -45,7 +44,7 @@ class AuthController(
             )
         ]
     )
-    fun getTokenByEmail(
+    fun getTokenByCrmAndEmail(
         @Valid @RequestBody request: GetTokenByCrmAndPassword
     ): ResponseEntity<Any> {
         val response = getTokenByCrmAndPasswordUseCase.execute(request)
