@@ -11,6 +11,10 @@ interface IDoctorDbService {
     fun verifyCrm(crm: String, id: String? = null): Boolean
     fun getById(id: String): GetItemResponse
     fun getByCrm(crm: String): ScanResponse
-    fun getByMedicalSpecialty(medicalSpecialty: String): ScanResponse
+    fun getByMedicalSpecialtyAndCityState(
+        medicalSpecialty: String,
+        city: String,
+        state: String
+    ): ScanResponse
     fun updateItem(doctorEntity: DoctorEntity) : UpdateItemResponse
 }

@@ -17,17 +17,16 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping(UrlMapping.Version.V1 + UrlMapping.Resource.USER)
-class UserController(
-    private val createDoctorUseCase: ICreateDoctorUseCase,
-    private val updateDoctorUseCase : IUpdateDoctorUseCase
+@RequestMapping(UrlMapping.Version.V1 + UrlMapping.Resource.DOCTOR)
+class DoctorController(
+    private val getDoctorsByFilterUseCase: IGetDoctorsByFilterUseCase
 ) {
-    @PostMapping(
-        name = "CreateDoctor"
+    @GetMapping(
+        name = "GetDoctorsByFilter"
     )
     @Operation(
-        method = "CreateDoctor",
-        description = "Create a doctor",
+        method = "GetDoctorsByFilter",
+        description = "Get doctors by filter",
         responses = [
             ApiResponse(
                 description = "OK", responseCode = "200", content = [
@@ -46,46 +45,10 @@ class UserController(
             )
         ]
     )
-    fun createDoctor(
-        @Valid @RequestBody request: CreateDoctorRequest
+    fun getDoctorsByFilter(
+        @Valid @RequestBody request: GetDoctorsByFilterRequest
     ): ResponseEntity<Any> {
-        val response = createDoctorUseCase.execute(request)
-
-        return ResponseEntity(
-            response.error ?: response.data,
-            response.statusCodes
-        )
-    }
-
-    @PutMapping(
-        name = "UpdateDoctor"
-    )
-    @Operation(
-        method = "UpdateDoctor",
-        description = "Update a doctor",
-        responses = [
-            ApiResponse(
-                description = "OK", responseCode = "200", content = [
-                    Content(schema = Schema(implementation = GetDoctorInformationResponse::class))
-                ]
-            ),
-            ApiResponse(
-                description = "Bad Request", responseCode = "400", content = [
-                    Content(schema = Schema(implementation = Unit::class))
-                ]
-            ),
-            ApiResponse(
-                description = "Internal Error", responseCode = "500", content = [
-                    Content(schema = Schema(implementation = Unit::class))
-                ]
-            )
-        ]
-    )
-    fun updateDoctor(
-        @Valid @RequestBody request: UpdateDoctorRequest,
-        @RequestHeader(value = "Authorization") auth: String
-    ): ResponseEntity<Any> {
-        val response = updateDoctorUseCase.execute(request, auth)
+        val response = getDoctorsByFilterUseCase.execute(request)
 
         return ResponseEntity(
             response.error ?: response.data,

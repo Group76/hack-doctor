@@ -1,13 +1,12 @@
 package com.group76.doctor.usecases.impl
 
-import com.group76.doctor.entities.request.GetTokenByCrmAndPassword
+import com.group76.doctor.entities.request.GetTokenByCrmAndPasswordRequest
 import com.group76.doctor.entities.response.BaseResponse
 import com.group76.doctor.entities.response.GetTokenResponse
 import com.group76.doctor.services.IDoctorDbService
 import com.group76.doctor.services.IHashService
 import com.group76.doctor.services.IJwtService
 import com.group76.doctor.usecases.IGetTokenByCrmAndPasswordUseCase
-import com.group76.doctor.utils.Helper
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 
@@ -17,7 +16,7 @@ class GetTokenByCrmAndPasswordUseCaseImpl(
     private val hashService: IHashService,
     private val jtwService: IJwtService
 ) : IGetTokenByCrmAndPasswordUseCase {
-    override fun execute(payload: GetTokenByCrmAndPassword): BaseResponse<GetTokenResponse> {
+    override fun execute(payload: GetTokenByCrmAndPasswordRequest): BaseResponse<GetTokenResponse> {
         val scanResponse = dynamo
             .getByCrm(payload.crm)
 

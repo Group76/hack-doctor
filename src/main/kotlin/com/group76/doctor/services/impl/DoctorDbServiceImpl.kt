@@ -3,6 +3,7 @@ package com.group76.doctor.services.impl
 import com.group76.doctor.configuration.SystemProperties
 import com.group76.doctor.entities.DoctorEntity
 import com.group76.doctor.services.IDoctorDbService
+import okhttp3.internal.notifyAll
 import org.springframework.stereotype.Component
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient
@@ -66,8 +67,24 @@ class DoctorDbServiceImpl(
         return scan("crm", crm)
     }
 
-    override fun getByMedicalSpecialty(medicalSpecialty: String): ScanResponse {
-        return scan("medicalSpecialty", medicalSpecialty)
+    override fun getByMedicalSpecialtyAndCityState(
+        medicalSpecialty: String,
+        city: String,
+        state: String
+    ): ScanResponse {
+        return scan(
+            filterExpression = "#specialty = :specialty AND #city = :city AND #state = :state",
+            names = mapOf(
+                "#specialty" to "medicalSpecialty",
+                "#city" to "city",
+                "#state" to "state"
+            ),
+            values = mapOf(
+                ":specialty" to AttributeValue.builder().s(medicalSpecialty).build(),
+                ":city" to AttributeValue.builder().s(city).build(),
+                ":state" to AttributeValue.builder().s(state).build()
+            )
+        )
     }
 
     fun scan(
@@ -99,6 +116,27 @@ class DoctorDbServiceImpl(
                 ":notEqualValue" to AttributeValue.builder().s(valueNotEqual).build()
             ))
             .build()
+
+        val result = dynamoDbClient.scan(scanRequest)
+        dynamoDbClient.close()
+        return result
+    }
+
+    fun scan(
+        filterExpression: String,
+        names: Map<String, String>,
+        values: Map<String, AttributeValue>
+    ): ScanResponse {
+        val dynamoDbClient = DynamoDbClient.builder()
+            .region(Region.US_EAST_2)
+            .build()
+
+        val scanRequest = ScanRequest.builder()
+                .tableName(tableName)
+                .filterExpression(filterExpression)
+                .expressionAttributeNames(names)
+                .expressionAttributeValues(values)
+                .build()
 
         val result = dynamoDbClient.scan(scanRequest)
         dynamoDbClient.close()

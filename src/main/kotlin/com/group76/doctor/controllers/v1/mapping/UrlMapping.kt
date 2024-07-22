@@ -8,5 +8,6 @@ object UrlMapping {
     object Resource {
         const val AUTH = "/auth"
         const val USER = "/user"
+        const val DOCTOR = "/doctor"
     }
 }

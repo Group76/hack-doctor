@@ -1,7 +1,7 @@
 package com.group76.doctor.controllers.v1
 
 import com.group76.doctor.controllers.v1.mapping.UrlMapping
-import com.group76.doctor.entities.request.GetTokenByCrmAndPassword
+import com.group76.doctor.entities.request.GetTokenByCrmAndPasswordRequest
 import com.group76.doctor.entities.response.GetDoctorInformationResponse
 import com.group76.doctor.usecases.IGetTokenByCrmAndPasswordUseCase
 import io.swagger.v3.oas.annotations.Operation
@@ -45,7 +45,7 @@ class AuthController(
         ]
     )
     fun getTokenByCrmAndEmail(
-        @Valid @RequestBody request: GetTokenByCrmAndPassword
+        @Valid @RequestBody request: GetTokenByCrmAndPasswordRequest
     ): ResponseEntity<Any> {
         val response = getTokenByCrmAndPasswordUseCase.execute(request)
 
